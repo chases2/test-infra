@@ -68,13 +68,12 @@ main() {
     --oneshot \
     --output "${testgrid_dir}/${testgrid_subdir}/gen-config.yaml"
 
+  git add --all
 
-  if [[ $(git diff --exit-code) -eq 0 ]]; then
+  if git diff --cached --exit-code; then
     echo "Transfigure did not change anything. Aborting no-op bump"
     exit 0
   fi
-
-  git add --all
 
   echo "Running kubernetes/test-infra tests..."
   bazel test //config/tests/...
